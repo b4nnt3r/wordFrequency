@@ -21,9 +21,15 @@ class Wordfreq
   end
 
   def frequency(word)
+    if @words.has_key?(word)
+    return frequencies[word]
+  else
+    0
+  end
   end
 
   def frequencies
+     @words
   end
 
   def top_words(number)
