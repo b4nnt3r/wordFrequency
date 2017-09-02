@@ -4,40 +4,48 @@ class Wordfreq
     'were', 'will', 'with']
 
   def initialize(filename)
-    contents = File.read(filename).downcase.gsub("--", " ")
-    contents = contents.gsub(/[^a-z0-9\s]/i, "")
-    word_array = contents.split(" ") - STOP_WORDS
+     #puts filename
+     contents = File.read(filename).downcase.gsub("--", " ")
+       contents = contents.gsub(/[^a-z0-9\s]/i, "")
+       word_array = contents.split(" ") - STOP_WORDS
 
-    @words = {}
+       @words = {}
 
-    word_array.each do |word|
-      if @words.include?(word)
-        @words[word] += 1
-      else
-        @words[word] = 1
-      end
-    end
-    top_words(5)
-  end
+       word_array.each do |word|
+         if @words.include?(word)
+           @words[word] += 1
+         else
+           @words[word] = 1
+         end
+       end
+       top_words(5)
+     end
 
-  def frequency(word)
-    if @words.has_key?(word)
-    return frequencies[word]
-  else
-    0
-  end
-  end
 
-  def frequencies
-     @words
-  end
+     def frequency(word)
+       if @words.has_key?(word)
+         return frequencies[word]
+       else
+         0
+       end
+     end
 
-  def top_words(number)
-  end
+     def frequencies
+       @words
+     end
 
-  def print_report
-  end
-end
+     def top_words(number)
+       @words.sort_by { |word, count| count }.reverse.take(5)
+     end
+
+     def print_report
+       top10 = @words.sort_by { |word, count| count }.reverse.take(10).to_h
+       top10.each { |word_and_count|
+         stars = "*" * word_and_count[1]
+         puts "#{word_and_count[0]} | #{word_and_count[1]} #{stars}"
+       }
+     end
+   end
 
 if __FILE__ == $0
   filename = ARGV[0]
